@@ -25,7 +25,7 @@ Optional environment variables:
 - `FESTIVAL_TZ`: time zone used to decide what "today" is (default `Asia/Kolkata`).
 - `DATABASE_CA`: Supabase's CA certificate (Supabase dashboard, Database settings, SSL). When set, the app verifies the database server's identity.
 
-`vercel.json` runs the app in Mumbai (`bom1`). If your Supabase project is in another region, change it to the Vercel region nearest to that one, so every scan stays fast.
+`vercel.json` runs the app in Tokyo (`hnd1`), next to the Supabase database (`ap-northeast-1`). If the database moves to another region, change this to the Vercel region nearest to it, so every scan stays fast.
 
 ## Try it on one computer
 

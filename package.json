@@ -7,11 +7,14 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": ">=22.13"
+    "node": ">=20"
   },
   "dependencies": {
     "express": "^4.21.2",
-    "jsqr": "^1.4.0",
+    "pg": "^8.23.1",
     "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8"
   }
 }

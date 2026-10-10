@@ -2,22 +2,39 @@
 
 Special-queue pass system for the temple festival. The committee issues QR passes, guests show them on their phone, and the police scan them at the special gate and get a green ALLOW or red STOP screen.
 
-## Run
-
-```bash
-npm install
-npm start
-```
-
-Needs Node.js 22.13 or newer. The server starts on port 3000 (set `PORT` to change it).
-
-On first run it creates the `data/` folder and writes the admin login to `data/admin-login.txt`. Log in, set a new password under **Users**, then delete that file.
+It runs on **Vercel** (the app) with **Supabase** (the database).
 
 | Page | Who uses it |
 |---|---|
 | `/admin` | Committee: issue passes, bulk upload, cancel, see gate entries, manage users |
 | `/scan` | Gate devices: scan QR codes |
 | `/p/<pass number>` | Guests: the pass itself, sent by WhatsApp link |
+
+## Deploy
+
+1. **Supabase**: open your project, click **Connect**, and copy the **Transaction pooler** connection string (port 6543). Put your database password in place of `[YOUR-PASSWORD]`.
+2. **Vercel**: import this repository as a new project. Before the first deploy, add two environment variables:
+   - `DATABASE_URL`: the connection string from step 1.
+   - `ADMIN_PASSWORD`: the password for the first admin login (username `admin`).
+3. Deploy, then open `/admin` and log in.
+
+The app creates its own tables on first use, inside a separate `gateway` schema, so it does not touch other tables in the same Supabase project. That schema is not reachable through Supabase's public API keys.
+
+Optional environment variables:
+
+- `FESTIVAL_TZ`: time zone used to decide what "today" is (default `Asia/Kolkata`).
+- `DATABASE_CA`: Supabase's CA certificate (Supabase dashboard, Database settings, SSL). When set, the app verifies the database server's identity.
+
+`vercel.json` runs the app in Mumbai (`bom1`). If your Supabase project is in another region, change it to the Vercel region nearest to that one, so every scan stays fast.
+
+## Try it on one computer
+
+```bash
+npm install
+npm start
+```
+
+With no `DATABASE_URL` it uses a small built-in database in the `data/` folder and writes the admin login to `data/admin-login.txt`. Open `http://localhost:3000/admin`.
 
 ## Roles
 
@@ -34,13 +51,11 @@ On first run it creates the `data/` folder and writes the admin login to `data/a
 ## At the gate
 
 1. Open `/scan` on each device and log in with a Scanner user **while the device has internet**. It downloads the pass list and stays logged in for 30 days.
-2. When online, every scan is checked with the server, so a pass used on one device is refused on the others.
+2. When online, every scan is checked with the server, so a pass used on one device is refused on the others. If two devices scan the same pass at the same moment, the database lets only one through.
 3. When the network drops, the device keeps working by itself: it checks the QR signature and its own list, and uploads the entries when the network returns. A forwarded screenshot could get through on a second device only during an outage; such entries show up under **Gate entries** marked "Used twice".
 4. Guests without a phone: type the pass number or mobile number in the box below the camera.
 
-## Hosting
+## Keep safe
 
-- **Render**: `render.yaml` sets up the service with a persistent disk at `/var/data`. Create it as a Blueprint and enter `ADMIN_PASSWORD` when asked; that becomes the first admin password.
-- The camera only works over **HTTPS**, so the server must be reached through an HTTPS address (any cloud host or reverse proxy provides this). `localhost` works for trying it out.
-- Set `FESTIVAL_TZ` if the festival is not in Indian time (default `Asia/Kolkata`).
-- **Back up the `data/` folder.** It holds the database and `keys.json`, the key that signs every pass. If `keys.json` is lost or replaced, all passes already sent stop working.
+- **The Supabase database is the whole system.** It holds the passes, the entries, and the key that signs every pass (table `gateway.secrets`). If that key is lost or replaced, all passes already sent stop working. Do not delete the project or the `gateway` schema during the festival.
+- Supabase's free plan pauses a project after a week with no activity. Open the pass office in the days before the festival to make sure it is awake.

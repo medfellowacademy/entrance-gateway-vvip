@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#8a1c1c">
+  <title>Gate Scanner</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="gate">
+  <header class="bar">
+    <h1 id="title">Gate Scanner</h1>
+    <span id="status" hidden>ONLINE</span>
+  </header>
+
+  <main id="login-wrap" hidden>
+    <form class="login" id="login">
+      <h2>Gate device login</h2>
+      <div><label for="l-user">Username</label><input id="l-user" autocomplete="username" required></div>
+      <div><label for="l-pass">Password</label><input id="l-pass" type="password" autocomplete="current-password" required></div>
+      <button>Log in</button>
+      <div class="msg err" id="l-msg"></div>
+    </form>
+  </main>
+
+  <div id="gate" hidden>
+    <div id="video-wrap">
+      <video id="video" playsinline muted></video>
+      <div class="frame"></div>
+    </div>
+    <div class="panel">
+      <div class="msg err" id="cam-msg"></div>
+      <div class="counts"><span id="count">Today: 0 persons</span><span id="pending"></span></div>
+      <form class="row" id="manual">
+        <input id="m-q" placeholder="No phone? Type pass number or mobile" autocomplete="off" style="flex:1">
+        <button>Find</button>
+      </form>
+      <div id="hits"></div>
+    </div>
+  </div>
+
+  <div id="result" hidden>
+    <div class="verdict"></div>
+    <div class="reason"></div>
+    <div class="name"></div>
+    <div class="persons"></div>
+    <div class="cat"></div>
+    <div class="detail"></div>
+    <div class="tap">Tap anywhere for next person</div>
+  </div>
+
+  <script src="/vendor/jsQR.js"></script>
+  <script src="/scan.js"></script>
+</body>
+</html>

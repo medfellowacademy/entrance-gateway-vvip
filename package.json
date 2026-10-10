@@ -1,0 +1,17 @@
+{
+  "name": "entrance-gateway",
+  "version": "1.0.0",
+  "description": "Special-queue pass system for temple festival: issue QR passes, scan at the gate",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "jsqr": "^1.4.0",
+    "qrcode": "^1.5.4"
+  }
+}

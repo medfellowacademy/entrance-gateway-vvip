@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pass Office</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="bar">
+    <h1 id="title">Pass Office</h1>
+    <span class="who" id="who"></span>
+    <button class="ghost small" id="logout" hidden>Log out</button>
+  </header>
+
+  <main>
+    <form class="card login" id="login" hidden>
+      <h2>Log in</h2>
+      <div><label for="l-user">Username</label><input id="l-user" autocomplete="username" required></div>
+      <div><label for="l-pass">Password</label><input id="l-pass" type="password" autocomplete="current-password" required></div>
+      <button>Log in</button>
+      <div class="msg err" id="l-msg"></div>
+    </form>
+
+    <div id="app" hidden>
+      <div class="stats" id="stats"></div>
+      <nav class="tabs" id="tabs"></nav>
+      <div id="view"></div>
+    </div>
+  </main>
+
+  <script src="/admin.js"></script>
+</body>
+</html>
